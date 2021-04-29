@@ -11,13 +11,16 @@ Use voice commands to pause and resume the currently playing media on the chrome
 * "Pause television"
 * "Resume television"
 * "Play television"
-* "Stop"
 * "Stop tv"
 * "Stop television"
+* "Stop the television"
 * "Pause the tv"
+* "Pause the television"
 * "Resume the tv"
+* "Resume the television"
 * "Start tv"
 * "Start the tv"
+* "Start the television"
 
 ## Credits
 Erik Berglund
