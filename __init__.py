@@ -3,32 +3,43 @@ import pychromecast
 
 
 class TvControl(MycroftSkill):
+
     def __init__(self):
+        print("TvControl constructor")
+        self.mc = None
         MycroftSkill.__init__(self)
-        print("getting chromecasts")
-        chromecasts  = pychromecast.get_chromecasts()
-        self.cast = [c for c in chromecasts if c.device.friendly_name == 'TVn'][0]
-        print("got cast")
-        self.cast.wait()
-        print("waited for cast")
+
 
     def get_media_controller(self):
-        mc = self.cast.media_controller
-        mc.block_until_active()
-        return mc
+        if  self.mc is None:
+            print("Initing chromecast.")
+            chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=["TVn"])
+            print("Chromecasts found")
+            cast = chromecasts[0]
+            cast.wait()
+            print("Waited for chromecast")
+            self.mc = cast.media_controller
+            self.mc.block_until_active()
+            print("controller active")
+            pychromecast.discovery.stop_discovery(browser)
+            print("Init complete")
+
+        return self.mc
+
 
     @intent_file_handler('control.tv.start.intent')
-    def handle_control_tv(self, message):
+    def handle_control_tv_start(self, message):
         print("starting tv")
-        self.get_media_controller().start()
+        self.get_media_controller().play()
 
     @intent_file_handler('control.tv.pause.intent')
-    def handle_control_tv(self, message):
+    def handle_control_tv_pause(self, message):
+        print("pause tv")
         self.get_media_controller().pause()
 
-
     @intent_file_handler('control.tv.stop.intent')
-    def handle_control_tv(self, message):
+    def handle_control_tv_stop(self, message):
+        print("stop tv")
         self.get_media_controller().stop()
 
 
