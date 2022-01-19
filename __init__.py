@@ -11,18 +11,19 @@ class TvControl(MycroftSkill):
 
 
     def get_media_controller(self):
-        if  self.mc is None:
-            print("Initing chromecast.")
-            chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=["TVn"])
-            print("Chromecasts found")
-            cast = chromecasts[0]
-            cast.wait()
-            print("Waited for chromecast")
-            self.mc = cast.media_controller
-            self.mc.block_until_active()
-            print("controller active")
-            pychromecast.discovery.stop_discovery(browser)
-            print("Init complete")
+        print("Initing chromecast.")
+        chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=["TVn"])
+        print("Chromecasts found")
+        cast = chromecasts[0]
+        print("Got chromecast "+str(cast))
+        cast.wait()
+        print("Waited for chromecast")
+        self.mc = cast.media_controller
+        self.mc.block_until_active()
+        print("controller active")
+        #pychromecast.discovery.stop_discovery(browser)
+        browser.stop_discovery()
+        print("Init complete")
 
         return self.mc
 
